@@ -1,24 +1,22 @@
 package org.com.finance_manament.models;
 
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
+@MappedSuperclass
+
 public abstract class BaseModel {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private Date CreatedAt;
     private Date UpdatedAt;
     private String CreatedBy;
     private String UpdatedBy;
-
-    @ManyToMany()
-    private List<Role> roles;
 }
 

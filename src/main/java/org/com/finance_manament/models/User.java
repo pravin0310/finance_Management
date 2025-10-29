@@ -1,16 +1,17 @@
 package org.com.finance_manament.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
+@Entity
 
 public class User extends BaseModel{
     private String name;
@@ -18,5 +19,10 @@ public class User extends BaseModel{
     private String email;
 
     @ManyToMany()
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
     private List<Role> role;
 }

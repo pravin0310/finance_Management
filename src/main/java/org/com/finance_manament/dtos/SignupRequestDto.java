@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class UserDto {
+public class SignupRequestDto {
     private String name;
     private String email;
     private String password;
