@@ -2,12 +2,15 @@ package org.com.finance_manament.service;
 
 import org.com.finance_manament.controller.AuthController;
 import org.com.finance_manament.dtos.UserDto;
+import org.com.finance_manament.exceptions.PasswordMismatchException;
 import org.com.finance_manament.exceptions.UserAlreadyExistException;
+import org.com.finance_manament.exceptions.UserNotSignedException;
 import org.com.finance_manament.models.Role;
 import org.com.finance_manament.models.User;
 import org.com.finance_manament.repository.RoleRepo;
 import org.com.finance_manament.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -52,5 +55,20 @@ public class Authservice implements IAuthService{
         }
 
         return userRepo.save(user);
+    }
+
+    public Pair<User,String> login(String email, String password){
+        Optional<User> userOptional = userRepo.findByEmailEquals(email);
+        if(userOptional.isEmpty()) {
+            throw new UserNotSignedException("Please try signup first");
+        }
+
+        String storedPassword = userOptional.get().getPassword();
+
+        if(!password.equals(storedPassword)) {
+            throw new PasswordMismatchException("Please type correct password");
+        }
+
+        return Pair.of(userOptional.get(), "Token");
     }
 }
